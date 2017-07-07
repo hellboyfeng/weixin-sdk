@@ -14,6 +14,9 @@ import java.util.List;
  */
 public class CardsTest {
 
+
+
+
     @Test
     public void testCreateMember(){
         Member member = new Member();

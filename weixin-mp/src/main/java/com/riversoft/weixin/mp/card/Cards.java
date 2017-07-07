@@ -117,7 +117,7 @@ public class Cards {
     }
 
     private String createCard(Card card) {
-        String json = JsonMapper.nonDefaultMapper().toJson(new CardWrapper(card));
+        String json = JsonMapper.defaultMapper().toJson(new CardWrapper(card));
         logger.debug("create card: {}", json);
 
         String url = WxEndpoint.get("url.card.create");
@@ -131,6 +131,40 @@ public class Cards {
             throw new WxRuntimeException(999, "create card failed.");
         }
     }
+
+    public String deleteCard(String  cardId) {
+        String json = "{\"card_id\":\"%s\"}";
+        logger.info("delete card: {}", cardId);
+
+        String url = WxEndpoint.get("url.card.delete");
+        String response = wxClient.post(url,String.format(json,cardId));
+        return response;
+
+    }
+
+
+    public String deposit(String json) {
+        String url = WxEndpoint.get("url.card.code.deposit");
+        String response = wxClient.post(url,json);
+        return response;
+
+    }
+
+    public String checkCode(String json) {
+        String url = WxEndpoint.get("url.card.code.check");
+        String response = wxClient.post(url,json);
+        return response;
+
+    }
+
+
+    public String modifyStock(String json) {
+        String url = WxEndpoint.get("url.card.modifystock");
+        String response = wxClient.post(url,json);
+        return response;
+
+    }
+
 
     /**
      * 获取卡片总数

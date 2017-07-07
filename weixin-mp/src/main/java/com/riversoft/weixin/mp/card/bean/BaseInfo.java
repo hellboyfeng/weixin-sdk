@@ -112,6 +112,18 @@ public class BaseInfo {
     @JsonProperty("use_custom_code")
     private boolean useCustomCode;
 
+
+    /**
+     * 填入
+     GET_CUSTOM_CODE_MODE_DEPOSIT
+     表示该卡券为预存code模式卡券，
+     须导入超过库存数目的自定义code后方可投放，
+     填入该字段后，quantity字段须为0,须导入code
+     后再增加库存
+     */
+    @JsonProperty("get_custom_code_mode")
+    private String getCustomCodeMode;
+
     /**
      * 是否指定用户领取，填写true或false。默认为false
      */
@@ -375,6 +387,14 @@ public class BaseInfo {
 
     public void setNeedPushOnView(boolean needPushOnView) {
         this.needPushOnView = needPushOnView;
+    }
+
+    public String getGetCustomCodeMode() {
+        return getCustomCodeMode;
+    }
+
+    public void setGetCustomCodeMode(String getCustomCodeMode) {
+        this.getCustomCodeMode = getCustomCodeMode;
     }
 
     public static class DateInfo {
