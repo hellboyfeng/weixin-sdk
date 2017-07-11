@@ -131,7 +131,12 @@ public class Cards {
             throw new WxRuntimeException(999, "create card failed.");
         }
     }
-
+    /**
+     * 删除优惠券
+     *
+     * @param coupon
+     * @return
+     */
     public String deleteCard(String  cardId) {
         String json = "{\"card_id\":\"%s\"}";
         logger.info("delete card: {}", cardId);
@@ -139,30 +144,56 @@ public class Cards {
         String url = WxEndpoint.get("url.card.delete");
         String response = wxClient.post(url,String.format(json,cardId));
         return response;
-
     }
 
 
+    /**
+     * 投放优惠券
+     *
+     * @param coupon
+     * @return
+     */
     public String deposit(String json) {
         String url = WxEndpoint.get("url.card.code.deposit");
         String response = wxClient.post(url,json);
         return response;
-
     }
 
+    /**
+     * 核查优惠券
+     *
+     * @param coupon
+     * @return
+     */
     public String checkCode(String json) {
         String url = WxEndpoint.get("url.card.code.check");
         String response = wxClient.post(url,json);
         return response;
-
     }
 
-
+     /**
+     * 修改优惠券库存
+     *
+     * @param coupon
+     * @return
+     */
     public String modifyStock(String json) {
         String url = WxEndpoint.get("url.card.modifystock");
         String response = wxClient.post(url,json);
         return response;
+    }
 
+
+    /**
+     * 生成卡卷二维码
+     *
+     * @param coupon
+     * @return
+     */
+    public String createQrcode(String json) {
+        String url = WxEndpoint.get("url.card.qrcode.create");
+        String response = wxClient.post(url,json);
+        return response;
     }
 
 
@@ -238,6 +269,53 @@ public class Cards {
         CardWrapper cardWrapper = JsonMapper.defaultMapper().fromJson(response, CardWrapper.class);
         return cardWrapper.getCard();
     }
+
+    public String searchCode(String cardId,String code) {
+        String json = "{" +
+                "   \"card_id\" : \"%s+\"," +
+                "   \"code\" : \"%s\"," +
+                "   \"check_consume\" : true" +
+                "}";
+        logger.debug("get card code: {}", cardId);
+
+        String url = WxEndpoint.get("url.card.code.get");
+        String response = wxClient.post(url, String.format(json, cardId,code));
+        return response;
+    }
+
+    public String consume(String cardId,String code) {
+        String json = "{" +
+                "  \"code\": \"%s\"," +
+                "  \"card_id\": \"%s\"" +
+                "}";
+        logger.debug("consume card code: {}", cardId);
+
+        String url = WxEndpoint.get("url.card.code.consume");
+        String response = wxClient.post(url, String.format(json, code,cardId));
+        return response;
+    }
+
+
+    public String memberActive(String cardId,String code,String number) {
+        String json = "{" +
+                "    \"init_bonus\": 100," +
+                "    \"init_bonus_record\":\"旧积分同步\"," +
+                "    \"init_balance\": 200," +
+                "    \"membership_number\": \"%s\"," +
+                "    \"code\": \"%s\"," +
+                "    \"card_id\": \"%s\"," +
+                "    \"background_pic_url\": \"https://mmbiz.qlogo.cn/mmbiz/0?wx_fmt=jpeg\"," +
+                "    \"init_custom_field_value1\": \"xxxxx\"" +
+                "}";
+        logger.debug("consume card code: {}", cardId);
+
+        String url = WxEndpoint.get("url.card.member.activate");
+        String response = wxClient.post(url, String.format(json, number,code,cardId));
+        return response;
+    }
+
+
+
 
     /**
      * 设置测试使用的白名单

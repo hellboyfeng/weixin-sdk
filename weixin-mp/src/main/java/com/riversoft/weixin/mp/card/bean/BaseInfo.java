@@ -189,6 +189,9 @@ public class BaseInfo {
     @JsonProperty("need_push_on_view")
     private boolean needPushOnView;
 
+
+
+
     public String getLogoUrl() {
         return logoUrl;
     }
@@ -396,6 +399,8 @@ public class BaseInfo {
     public void setGetCustomCodeMode(String getCustomCodeMode) {
         this.getCustomCodeMode = getCustomCodeMode;
     }
+
+
 
     public static class DateInfo {
 
