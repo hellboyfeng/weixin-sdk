@@ -296,24 +296,60 @@ public class Cards {
     }
 
 
-    public String memberActive(String cardId,String code,String number) {
+    public String memberActive(String cardId,String code,String number,String integral) {
         String json = "{" +
-                "    \"init_bonus\": 100," +
-                "    \"init_bonus_record\":\"旧积分同步\"," +
-                "    \"init_balance\": 200," +
+                "    \"init_bonus\": %s," +
+                "    \"init_bonus_record\":\"积分同步\"," +
+                "    \"init_balance\": 100," +
                 "    \"membership_number\": \"%s\"," +
                 "    \"code\": \"%s\"," +
                 "    \"card_id\": \"%s\"," +
-                "    \"background_pic_url\": \"https://mmbiz.qlogo.cn/mmbiz/0?wx_fmt=jpeg\"," +
+                "    \"background_pic_url\": \"https://mmbiz.qlogo.cn/mmbiz_jpg/ON84cr4Rib6MX8UugBP9uRmRxOkYqBVMACickSzpNRqYSZia0Y5Danqk3PvmHzeWcxYztTNR5KGKCyGkMuTDmlKEw/0?wx_fmt=jpeg\"," +
                 "    \"init_custom_field_value1\": \"xxxxx\"" +
                 "}";
         logger.debug("consume card code: {}", cardId);
 
         String url = WxEndpoint.get("url.card.member.activate");
-        String response = wxClient.post(url, String.format(json, number,code,cardId));
+        String response = wxClient.post(url, String.format(json, integral,number,code,cardId));
         return response;
     }
 
+    public String activeGetUrl(String cardId) {
+        String json = "{" +
+                "  \"card_id\": \"%s\"," +
+                "  \"outer_str\": \"123\"" +
+                "}";
+        String url = WxEndpoint.get("url.card.member.activate.url");
+        String response = wxClient.post(url, String.format(json,cardId));
+        return response;
+    }
+
+
+    public String activateUserform(String cardId) {
+        String json = "{" +
+                "    \"card_id\": \"%s\"," +
+                "    \"service_statement\": {" +
+                "        \"name\": \"会员守则\"," +
+                "        \"url\": \"https://www.xiya3333.com\"" +
+                "    }," +
+                "    \"bind_old_card\": {" +
+                "        \"name\": \"老会员绑定\"," +
+                "        \"url\": \"http://wx.xiya3333.com/business/#/register\"" +
+                "    }," +
+                "    \"required_form\": {" +
+                "        \"can_modify\":false," +
+                "        \"common_field_id_list\":[" +
+                "            \"USER_FORM_INFO_FLAG_MOBILE\"," +
+                "            \"USER_FORM_INFO_FLAG_SEX\"," +
+                "            \"USER_FORM_INFO_FLAG_NAME\"," +
+                "            \"USER_FORM_INFO_FLAG_IDCARD\"" +
+                "        ]" +
+                "    }" +
+                "}";
+        String url = WxEndpoint.get("url.card.member.activate.form");
+        String response = wxClient.post(url, String.format(json,cardId));
+        return response;
+    }
 
 
 
