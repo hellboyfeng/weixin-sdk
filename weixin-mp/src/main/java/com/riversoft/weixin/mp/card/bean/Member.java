@@ -114,6 +114,12 @@ public class Member extends AbstractCard {
     @JsonProperty("discount")
     private int discount;
 
+    @JsonProperty("wx_activate_after_submit")
+    private boolean wxActivateAfterSubmit;
+
+    @JsonProperty("wx_activate_after_submit_url")
+    private String wxActivateAfterSubmitUrl;
+
     public String getPrerogative() {
         return prerogative;
     }
@@ -256,6 +262,22 @@ public class Member extends AbstractCard {
 
     public void setDiscount(int discount) {
         this.discount = discount;
+    }
+
+    public boolean isWxActivateAfterSubmit() {
+        return wxActivateAfterSubmit;
+    }
+
+    public void setWxActivateAfterSubmit(boolean wxActivateAfterSubmit) {
+        this.wxActivateAfterSubmit = wxActivateAfterSubmit;
+    }
+
+    public String getWxActivateAfterSubmitUrl() {
+        return wxActivateAfterSubmitUrl;
+    }
+
+    public void setWxActivateAfterSubmitUrl(String wxActivateAfterSubmitUrl) {
+        this.wxActivateAfterSubmitUrl = wxActivateAfterSubmitUrl;
     }
 
     public static class CustomField {

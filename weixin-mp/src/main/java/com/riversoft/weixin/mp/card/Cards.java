@@ -270,6 +270,17 @@ public class Cards {
         return cardWrapper.getCard();
     }
 
+    public String codeDecrypt(String encryptCode) {
+        String json = "{\"encrypt_code\":\"%s\"}";
+        logger.debug("decrypt code: {}", encryptCode);
+
+        String url = WxEndpoint.get("url.card.code.decrypt");
+        String response = wxClient.post(url, String.format(json, encryptCode));
+        return response;
+    }
+
+
+
     public String searchCode(String cardId,String code) {
         String json = "{" +
                 "   \"card_id\" : \"%s+\"," +
@@ -300,7 +311,7 @@ public class Cards {
         String json = "{" +
                 "    \"init_bonus\": %s," +
                 "    \"init_bonus_record\":\"积分同步\"," +
-                "    \"init_balance\": 100," +
+                "    \"init_balance\": 0," +
                 "    \"membership_number\": \"%s\"," +
                 "    \"code\": \"%s\"," +
                 "    \"card_id\": \"%s\"," +
@@ -334,7 +345,7 @@ public class Cards {
                 "    }," +
                 "    \"bind_old_card\": {" +
                 "        \"name\": \"老会员绑定\"," +
-                "        \"url\": \"http://wx.xiya3333.com/business/#/register\"" +
+                "        \"url\": \"http://wx.xiya3333.com/xiya/weixin/mp/member/bindview\"" +
                 "    }," +
                 "    \"required_form\": {" +
                 "        \"can_modify\":false," +
@@ -351,6 +362,15 @@ public class Cards {
         return response;
     }
 
+
+    public String activeInfoGet(String activateTicke) {
+        String json = " {" +
+                        "\"activate_ticket\" : \"%s\"" +
+                     "}";
+        String url = WxEndpoint.get("url.card.member.attivate.info.get");
+        String response = wxClient.post(url, String.format(json,activateTicke));
+        return response;
+    }
 
 
     /**
