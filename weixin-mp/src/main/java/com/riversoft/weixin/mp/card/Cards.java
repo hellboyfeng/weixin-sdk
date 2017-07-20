@@ -336,6 +336,30 @@ public class Cards {
     }
 
 
+
+    public String landingpageCreate(String cardId) {
+        String json = "{  " +
+                "\"banner\":\"https://mmbiz.qlogo.cn/mmbiz_jpg/ON84cr4Rib6MbWzVicnWueAgYWrXua1RgQGuOkz2K5NroWibYSkAlQS2ancLQWVBQm31Hco4LvwPPYMahXkMVJyjw/0?wx_fmt=jpeg\"," +
+                "   \"page_title\": \"西亚会员卡列表\"," +
+                "   \"can_share\": true," +
+                "   \"scene\": \"SCENE_NEAR_BY\"," +
+                "   \"card_list\": [" +
+                "       {" +
+                "           \"card_id\": \"p2zKvjtfKqZSTw_jPY8O4bLUKpeM\"," +
+                "           \"thumb_url\": \"http://mmbiz.qpic.cn/mmbiz_jpg/ON84cr4Rib6M7kPADl39MIwc4OOJmWHnvfSkTu4NtKKkCjd7AwgwS2G8nsLKibZzHLQESBJaeGt7tAMN3gYxYyrw/0?wx_fmt=jpeg\"" +
+                "       }," +
+                "       {" +
+                "           \"card_id\": \"p2zKvju2GkX79HfLNxDLE7Had5-k\"," +
+                "           \"thumb_url\": \"http://mmbiz.qpic.cn/mmbiz_jpg/ON84cr4Rib6M7kPADl39MIwc4OOJmWHnvfSkTu4NtKKkCjd7AwgwS2G8nsLKibZzHLQESBJaeGt7tAMN3gYxYyrw/0?wx_fmt=jpeg\"" +
+                "       }" +
+                "   ]" +
+                "}";
+        String url = WxEndpoint.get("url.card.landingpage.create");
+        String response = wxClient.post(url, String.format(json,cardId));
+        return response;
+    }
+
+
     public String activateUserform(String cardId) {
         String json = "{" +
                 "    \"card_id\": \"%s\"," +
@@ -352,10 +376,16 @@ public class Cards {
                 "        \"common_field_id_list\":[" +
                 "            \"USER_FORM_INFO_FLAG_MOBILE\"," +
                 "            \"USER_FORM_INFO_FLAG_SEX\"," +
-                "            \"USER_FORM_INFO_FLAG_NAME\"," +
-                "            \"USER_FORM_INFO_FLAG_IDCARD\"" +
+                "            \"USER_FORM_INFO_FLAG_NAME\"" +
                 "        ]" +
-                "    }" +
+                "    }," +
+                " \"optional_form\": {" +
+                "        \"can_modify\":false," +
+                "        \"common_field_id_list\":[" +
+                "            \"USER_FORM_INFO_FLAG_IDCARD\"," +
+                "            \"USER_FORM_INFO_FLAG_BIRTHDAY\"" +
+                "        ]"+
+                "    }"+
                 "}";
         String url = WxEndpoint.get("url.card.member.activate.form");
         String response = wxClient.post(url, String.format(json,cardId));
