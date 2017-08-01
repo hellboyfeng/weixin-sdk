@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
 import com.riversoft.weixin.common.event.EventRequest;
 
-/**
- * @borball on 3/17/2016.
- */
+
 public class UserGetCardEvent extends EventRequest {
 
     @JsonProperty("CardId")

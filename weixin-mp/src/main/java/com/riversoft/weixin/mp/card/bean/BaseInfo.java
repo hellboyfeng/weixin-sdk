@@ -480,7 +480,7 @@ public class BaseInfo {
 
         public enum DateInfoType {
 
-            DATE_TYPE_FIX_TIME_RANGE(1), DATE_TYPE_FIX_TERM(2);
+            DATE_TYPE_FIX_TIME_RANGE(1), DATE_TYPE_FIX_TERM(2),DATE_TYPE_PERMANENT(3);
 
             private int code;
 

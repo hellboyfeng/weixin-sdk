@@ -190,9 +190,20 @@ public class Cards {
      * @param coupon
      * @return
      */
-    public String createQrcode(String json) {
+    public String createQrcode(String cardId,String outerStr) {
+        String json = " {" +
+                "\"action_name\": \"QR_CARD\", " +
+                "\"action_info\": {" +
+                "\"card\": {" +
+                "\"card_id\": \"%s\"," +
+                "\"outer_str\":\"%s\""+
+                "  }" +
+                " }" +
+                "}";
+        String data = String.format(json,cardId,outerStr);
+        logger.info(data);
         String url = WxEndpoint.get("url.card.qrcode.create");
-        String response = wxClient.post(url,json);
+        String response = wxClient.post(url,data);
         return response;
     }
 
@@ -307,21 +318,28 @@ public class Cards {
     }
 
 
-    public String memberActive(String cardId,String code,String number,String integral) {
+    /**
+     * 激活会员卡
+     * @param cardId
+     * @param code
+     * @param number
+     * @param integral
+     * @param balance
+     * @return
+     */
+    public String memberActive(String cardId,String code,String number,String integral,String balance) {
         String json = "{" +
                 "    \"init_bonus\": %s," +
                 "    \"init_bonus_record\":\"积分同步\"," +
-                "    \"init_balance\": 0," +
+                "    \"init_balance\": %s," +
                 "    \"membership_number\": \"%s\"," +
                 "    \"code\": \"%s\"," +
-                "    \"card_id\": \"%s\"," +
-                "    \"background_pic_url\": \"https://mmbiz.qlogo.cn/mmbiz_jpg/ON84cr4Rib6MX8UugBP9uRmRxOkYqBVMACickSzpNRqYSZia0Y5Danqk3PvmHzeWcxYztTNR5KGKCyGkMuTDmlKEw/0?wx_fmt=jpeg\"," +
-                "    \"init_custom_field_value1\": \"xxxxx\"" +
+                "    \"card_id\": \"%s\"" +
                 "}";
         logger.debug("consume card code: {}", cardId);
 
         String url = WxEndpoint.get("url.card.member.activate");
-        String response = wxClient.post(url, String.format(json, integral,number,code,cardId));
+        String response = wxClient.post(url, String.format(json, integral,balance,number,code,cardId));
         return response;
     }
 
@@ -336,7 +354,11 @@ public class Cards {
     }
 
 
-
+    /**
+     * 会员卡货架
+     * @param cardId
+     * @return
+     */
     public String landingpageCreate(String cardId) {
         String json = "{  " +
                 "\"banner\":\"https://mmbiz.qlogo.cn/mmbiz_jpg/ON84cr4Rib6MbWzVicnWueAgYWrXua1RgQGuOkz2K5NroWibYSkAlQS2ancLQWVBQm31Hco4LvwPPYMahXkMVJyjw/0?wx_fmt=jpeg\"," +
@@ -360,13 +382,14 @@ public class Cards {
     }
 
 
+    /**
+     * 微信会员设置开卡字段
+     * @param cardId
+     * @return
+     */
     public String activateUserform(String cardId) {
         String json = "{" +
                 "    \"card_id\": \"%s\"," +
-                "    \"service_statement\": {" +
-                "        \"name\": \"会员守则\"," +
-                "        \"url\": \"https://www.xiya3333.com\"" +
-                "    }," +
                 "    \"bind_old_card\": {" +
                 "        \"name\": \"老会员绑定\"," +
                 "        \"url\": \"http://wx.xiya3333.com/xiya/weixin/mp/member/bindview\"" +
@@ -395,10 +418,26 @@ public class Cards {
 
     public String activeInfoGet(String activateTicke) {
         String json = " {" +
-                        "\"activate_ticket\" : \"%s\"" +
-                     "}";
+                "\"activate_ticket\" : \"%s\"" +
+                "}";
         String url = WxEndpoint.get("url.card.member.attivate.info.get");
         String response = wxClient.post(url, String.format(json,activateTicke));
+        return response;
+    }
+
+
+    public String updateUser(String code,String cardId,String point) {
+        String json = "{\n" +
+                "    \"code\": \"%s\",\n" +
+                "     \"card_id\": \"%s\",\n" +
+                "    \"bonus\": %s,\n" +
+                "    \"notify_optional\": {\n" +
+                "        \"is_notify_bonus\": true,\n" +
+                "        \"is_notify_balance\": true\n" +
+                "    }\n" +
+                "}";
+        String url = WxEndpoint.get("url.card.member.update.user");
+        String response = wxClient.post(url, String.format(json,code,cardId,point));
         return response;
     }
 
