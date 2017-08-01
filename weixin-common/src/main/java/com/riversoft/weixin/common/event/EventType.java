@@ -58,5 +58,9 @@ public enum EventType {
     /**
      * 小程序：进入会话事件
      */
-    user_enter_tempsession
+    user_enter_tempsession,
+
+    user_get_card,
+    submit_membercard_user_info,
+    user_view_card
 }
