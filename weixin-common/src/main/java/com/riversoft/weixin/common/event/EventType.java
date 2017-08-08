@@ -62,5 +62,6 @@ public enum EventType {
 
     user_get_card,
     submit_membercard_user_info,
-    user_view_card
+    user_view_card,
+    card_pass_check
 }
