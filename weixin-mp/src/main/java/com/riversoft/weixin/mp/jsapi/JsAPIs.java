@@ -133,7 +133,7 @@ public class JsAPIs {
         }
 
         try {
-            String signature = SHA1.getSHA1((String[])parameters.toArray());
+            String signature = SHA1.getSHA1(parameters.toArray(new String[parameters.size()]));
 
             wxCardAPISignature.setNonce(nonce);
             wxCardAPISignature.setTimestamp(timestamp);

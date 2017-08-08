@@ -7,6 +7,7 @@ import com.riversoft.weixin.common.message.XmlMessageHeader;
 import com.riversoft.weixin.common.request.*;
 import com.riversoft.weixin.common.util.XmlObjectMapper;
 import com.riversoft.weixin.mp.event.MessageSentEvent;
+import com.riversoft.weixin.mp.event.card.CardPassCheckEvent;
 import com.riversoft.weixin.mp.event.card.UserGetCardEvent;
 import com.riversoft.weixin.mp.event.card.UserViewCardEvent;
 import com.riversoft.weixin.mp.event.care.SessionCloseEvent;
@@ -99,6 +100,8 @@ public class MpXmlMessages {
                     return XmlObjectMapper.defaultMapper().fromXml(xml, UserGetCardEvent.class);
                 case user_view_card:
                     return XmlObjectMapper.defaultMapper().fromXml(xml, UserViewCardEvent.class);
+                case card_pass_check:
+                    return XmlObjectMapper.defaultMapper().fromXml(xml, CardPassCheckEvent.class);
                 default:
                     logger.warn("xml to event, unknown event type {}.", eventRequest.getEventType());
                     throw new WxRuntimeException(999, "xml to bean event, unknown event type " + eventRequest.getEventType());

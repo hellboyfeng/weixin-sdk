@@ -153,9 +153,11 @@ public class Cards {
      * @param coupon
      * @return
      */
-    public String deposit(String json) {
+    public String deposit(String cardid,String codes) {
+        String json = "{\"card_id\":\"%s\",\"code\":%s}";
+        logger.info("deposit card: {} codes:{}", cardid,codes);
         String url = WxEndpoint.get("url.card.code.deposit");
-        String response = wxClient.post(url,json);
+        String response = wxClient.post(url,String.format(json,cardid,codes));
         return response;
     }
 
@@ -165,9 +167,11 @@ public class Cards {
      * @param coupon
      * @return
      */
-    public String checkCode(String json) {
+    public String checkCode(String cardid,String codes) {
+        String json = "{\"card_id\":\"%s\",\"code\":%s}";
+        logger.info("check card: {} codes:{}", cardid,codes);
         String url = WxEndpoint.get("url.card.code.check");
-        String response = wxClient.post(url,json);
+        String response = wxClient.post(url,String.format(json,cardid,codes));
         return response;
     }
 
@@ -177,9 +181,11 @@ public class Cards {
      * @param coupon
      * @return
      */
-    public String modifyStock(String json) {
+    public String modifyStock(String cardid,int increase,int reduce) {
+        String json = "{\"card_id\":\"%s\",\"increase_stock_value\":%s,\"reduce_stock_value\":%s}";
+        logger.info("modifysotck card: {},increase:{},reduce:{}", cardid,increase,reduce);
         String url = WxEndpoint.get("url.card.modifystock");
-        String response = wxClient.post(url,json);
+        String response = wxClient.post(url,String.format(json,cardid,increase,reduce));
         return response;
     }
 
@@ -201,6 +207,34 @@ public class Cards {
                 " }" +
                 "}";
         String data = String.format(json,cardId,outerStr);
+        logger.info(data);
+        String url = WxEndpoint.get("url.card.qrcode.create");
+        String response = wxClient.post(url,data);
+        return response;
+    }
+
+
+
+    /**
+     * 生成卡卷二维码
+     *
+     * @param coupon
+     * @return
+     */
+    public String createQrcode(String cardId,String code,String outerStr,String openid) {
+        String json = " {" +
+                "\"action_name\": \"QR_CARD\", " +
+                "\"action_info\": {" +
+                "\"card\": {" +
+                "\"card_id\": \"%s\"," +
+                "\"openid\": \"%s\","+
+                "\"code\": \"%s\"," +
+                "\"outer_str\":\"%s\","+
+                "\"is_unique_code\":false"+
+                "  }" +
+                " }" +
+                "}";
+        String data = String.format(json,cardId,openid,code,outerStr);
         logger.info(data);
         String url = WxEndpoint.get("url.card.qrcode.create");
         String response = wxClient.post(url,data);
@@ -302,6 +336,20 @@ public class Cards {
 
         String url = WxEndpoint.get("url.card.code.get");
         String response = wxClient.post(url, String.format(json, cardId,code));
+        return response;
+    }
+
+
+    /**
+     * 核查优惠券
+     *
+     * @param coupon
+     * @return
+     */
+    public String updateCode(String cardid,String code,String newCode) {
+        String json = "{\"card_id\":\"%s\",\"code\":%s,\"new_code\":%s}";
+        String url = WxEndpoint.get("url.card.code.update");
+        String response = wxClient.post(url,String.format(json,cardid,code,newCode));
         return response;
     }
 

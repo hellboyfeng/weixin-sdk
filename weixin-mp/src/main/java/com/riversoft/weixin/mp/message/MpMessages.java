@@ -472,9 +472,18 @@ public class MpMessages {
         @JsonProperty("card_id")
         private String cardId;
 
+        @JsonProperty("card_ext")
+        private String cardExt;
+
         public Card(String cardId) {
             this.cardId = cardId;
         }
+
+        public Card(String cardId,String cardExt) {
+            this.cardId = cardId;
+            this.cardExt = cardExt;
+        }
+
 
         public String getCardId() {
             return cardId;
@@ -484,6 +493,13 @@ public class MpMessages {
             this.cardId = cardId;
         }
 
+        public String getCardExt() {
+            return cardExt;
+        }
+
+        public void setCardExt(String cardExt) {
+            this.cardExt = cardExt;
+        }
     }
 
     public static class Text {
