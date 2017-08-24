@@ -101,7 +101,6 @@ public class JsAPIs {
         if(wxCardAPITicket == null || wxCardAPITicket.expired()) {
             getWxCardAPITicket();
         }
-
         long timestamp = System.currentTimeMillis() / 1000;
         String nonce = RandomStringGenerator.getRandomStringByLength(16);
         String ticket = wxCardAPITicket.getTicket();
@@ -110,7 +109,6 @@ public class JsAPIs {
         if(wxCardAPISignature.isChooseCard()) {
             parameters.add(wxClient.getClientId());
         }
-
         parameters.add(ticket);
         parameters.add(wxCardAPISignature.getCardId());
         parameters.add(nonce);

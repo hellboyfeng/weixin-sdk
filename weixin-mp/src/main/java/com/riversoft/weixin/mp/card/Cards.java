@@ -328,7 +328,7 @@ public class Cards {
 
     public String searchCode(String cardId,String code) {
         String json = "{" +
-                "   \"card_id\" : \"%s+\"," +
+                "   \"card_id\" : \"%s\"," +
                 "   \"code\" : \"%s\"," +
                 "   \"check_consume\" : true" +
                 "}";
@@ -347,12 +347,18 @@ public class Cards {
      * @return
      */
     public String updateCode(String cardid,String code,String newCode) {
-        String json = "{\"card_id\":\"%s\",\"code\":%s,\"new_code\":%s}";
+        String json = "{\"card_id\":\"%s\",\"code\":\"%s\",\"new_code\":\"%s\"}";
         String url = WxEndpoint.get("url.card.code.update");
         String response = wxClient.post(url,String.format(json,cardid,code,newCode));
         return response;
     }
 
+    /**
+     * 核销卡券
+     * @param cardId
+     * @param code
+     * @return
+     */
     public String consume(String cardId,String code) {
         String json = "{" +
                 "  \"code\": \"%s\"," +
@@ -362,6 +368,26 @@ public class Cards {
 
         String url = WxEndpoint.get("url.card.code.consume");
         String response = wxClient.post(url, String.format(json, code,cardId));
+        return response;
+    }
+
+    /**
+     * 设置卡券失效
+     * @param cardId
+     * @param code
+     * @param reason
+     * @return
+     */
+    public String unavailable(String cardId,String code,String reason) {
+        String json = "{" +
+                "  \"code\": \"%s\"," +
+                "  \"card_id\": \"%s\"," +
+                "  \"reason\": \"%s\"" +
+                "}";
+        logger.debug("unavailable card code: {}", code);
+
+        String url = WxEndpoint.get("url.card.code.unavailable");
+        String response = wxClient.post(url, String.format(json, code,cardId,reason));
         return response;
     }
 
@@ -517,7 +543,7 @@ public class Cards {
      * @param cardId
      * @return
      */
-    String getContentByCardId(String cardId) {
+    public  String getContentByCardId(String cardId) {
         Map<String, Object> request = new HashMap<>();
         request.put("card_id", cardId);
 
