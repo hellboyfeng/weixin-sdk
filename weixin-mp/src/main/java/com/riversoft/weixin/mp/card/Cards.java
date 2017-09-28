@@ -1,5 +1,6 @@
 package com.riversoft.weixin.mp.card;
 
+import com.google.common.base.Strings;
 import com.riversoft.weixin.common.WxClient;
 import com.riversoft.weixin.common.exception.WxRuntimeException;
 import com.riversoft.weixin.common.util.JsonMapper;
@@ -401,7 +402,8 @@ public class Cards {
      * @param balance
      * @return
      */
-    public String memberActive(String cardId,String code,String number,String integral,String balance) {
+    public String memberActive(String cardId,String code,String number,String integral,String balance,String level) {
+        String format = "";
         String json = "{" +
                 "    \"init_bonus\": %s," +
                 "    \"init_bonus_record\":\"积分同步\"," +
@@ -410,10 +412,29 @@ public class Cards {
                 "    \"code\": \"%s\"," +
                 "    \"card_id\": \"%s\"" +
                 "}";
+        if(!Strings.isNullOrEmpty(level)){
+            json = "{" +
+                    "    \"init_bonus\": %s," +
+                    "    \"init_bonus_record\":\"积分同步\"," +
+                    "    \"init_balance\": %s," +
+                    "    \"membership_number\": \"%s\"," +
+                    "    \"code\": \"%s\"," +
+                    "    \"card_id\": \"%s\"," +
+                    "    \"init_custom_field_value1\": \"%s\"" +
+                    "}";
+        }
+        format = String.format(json, integral,balance,number,code,cardId,level);
+        if(Strings.isNullOrEmpty(integral)){
+            json = "{" +
+                    "    \"membership_number\": \"%s\"," +
+                    "    \"code\": \"%s\"," +
+                    "    \"card_id\": \"%s\"" +
+                    "}";
+            format = String.format(json,number,code,cardId);
+        }
         logger.debug("consume card code: {}", cardId);
-
         String url = WxEndpoint.get("url.card.member.activate");
-        String response = wxClient.post(url, String.format(json, integral,balance,number,code,cardId));
+        String response = wxClient.post(url,format);
         return response;
     }
 
@@ -424,6 +445,16 @@ public class Cards {
                 "}";
         String url = WxEndpoint.get("url.card.member.activate.url");
         String response = wxClient.post(url, String.format(json,cardId));
+        return response;
+    }
+
+    public String getCardList(String cardId,String openId) {
+        String json = "{" +
+                "  \"card_id\": \"%s\"," +
+                "  \"openid\": \"%s\"" +
+                "}";
+        String url = WxEndpoint.get("url.card.code.getcardlist");
+        String response = wxClient.post(url, String.format(json,cardId,openId));
         return response;
     }
 
@@ -512,6 +543,38 @@ public class Cards {
                 "}";
         String url = WxEndpoint.get("url.card.member.update.user");
         String response = wxClient.post(url, String.format(json,code,cardId,point));
+        return response;
+    }
+
+
+    public String update(String cardId,String title) {
+        String json = "{\n" +
+                "    \"card_id\": \"%s\",\n" +
+                "    \"member_card\": {\n" +
+                "        \"base_info\": {\n" +
+                "            \"center_title\": \"%s\",\n" +
+                "            \"center_url\": \"%s\",\n" +
+                "            \"custom_url_sub_title\": \"%s\"\n" +
+                "        }\n" +
+                "    }\n" +
+                "}";
+        String url = WxEndpoint.get("url.card.update");
+        String response = wxClient.post(url, String.format(json,cardId,"查询余额","http://wx.xiya3333.com/xiya/weixin/mp/member/money",title));
+        return response;
+    }
+
+
+    public String updateUserImg(String code,String cardId,String bgimg) {
+        String json = "{\n" +
+                "    \"code\": \"%s\",\n" +
+                "     \"card_id\": \"%s\",\n" +
+                "    \"background_pic_url\": \"%s\",\n" +
+                "    \"notify_optional\": {\n" +
+                "        \"is_notify_bonus\": true\n" +
+                "    }\n" +
+                "}";
+        String url = WxEndpoint.get("url.card.member.update.user");
+        String response = wxClient.post(url, String.format(json,code,cardId,bgimg));
         return response;
     }
 

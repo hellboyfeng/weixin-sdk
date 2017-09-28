@@ -82,7 +82,7 @@ public class JsAPIs {
             JsAPISignature jsAPISignature = new JsAPISignature();
             jsAPISignature.setAppId(wxClient.getClientId());
             jsAPISignature.setNonce(nonce);
-            jsAPISignature.setTimestamp(timestamp);
+            jsAPISignature.setTimestamp(String.valueOf(timestamp));
             jsAPISignature.setSignature(signature);
             jsAPISignature.setUrl(url);
             return jsAPISignature;
