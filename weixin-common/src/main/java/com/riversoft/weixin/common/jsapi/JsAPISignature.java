@@ -6,7 +6,7 @@ package com.riversoft.weixin.common.jsapi;
 public class JsAPISignature {
 
     private String appId;
-    private long timestamp;
+    private String timestamp;
     private String nonce;
     private String signature;
     private String url;
@@ -24,11 +24,11 @@ public class JsAPISignature {
         this.appId = appId;
     }
 
-    public long getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
